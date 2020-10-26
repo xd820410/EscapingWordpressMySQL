@@ -1,0 +1,18 @@
+{
+    "name": "wakeup/escaping-wordpress-mysql",
+    "description": "Connect to MySQL without Wordpress function",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Wakeup Co.,Ltd.",
+            "email": "yc@wakeup.com.tw"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Wakeup\\Mysql\\": "Wakeup/Mysql"
+        }
+    }
+}
