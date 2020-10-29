@@ -4,6 +4,10 @@ namespace Wakeup\Mysql;
 
 use \PDO;
 
+require __DIR__ . '/vendor/autoload.php';
+$dotenv = \Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv->load();
+
 class Mysql
 {
     private $dbHost = '';
