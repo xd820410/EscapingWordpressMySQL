@@ -2,6 +2,8 @@
 
 namespace Wakeup\Mysql;
 
+use \PDO;
+
 class Mysql
 {
     private $dbHost = '';
@@ -18,7 +20,7 @@ class Mysql
 
     private function getWordpressDatabaseInfomation()
     {
-        $file = fopen($_SERVER['DOCUMENT_ROOT'] . '/wp-config.php', 'r');
+        $file = fopen($_SERVER['DOCUMENT_ROOT'] . $_ENV['OLD_SITE'], 'r');
 
         if (!empty($file)) {
 
