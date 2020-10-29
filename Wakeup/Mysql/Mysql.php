@@ -62,4 +62,14 @@ class Mysql
     {
         $this->connection = new PDO('mysql: host = ' . $this->dbHost . '; dbname = ' . $this->dbName . '; charset=utf8', $this->dbUser, $this->dbPassword);
     }
+
+    private function test()
+    {
+        $sql = $this->connection->prepare('SELECT * FROM `wp_user` WHERE `id` != ?');
+        $sql->bindValue(1, 0);
+        $sql->execute();
+        $result = $sql->fetch(PDO::FETCH_ASSOC);
+
+        return $result;
+    }
 }
