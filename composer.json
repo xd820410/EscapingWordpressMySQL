@@ -16,5 +16,6 @@
         "psr-4": {
             "Wakeup\\Mysql\\": "Wakeup/Mysql"
         }
-    }
+    },
+    "version": "0.0.1"
 }
