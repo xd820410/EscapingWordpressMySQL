@@ -4,10 +4,6 @@ namespace Wakeup\Mysql;
 
 use \PDO;
 
-require __DIR__ . '/vendor/autoload.php';
-$dotenv = \Dotenv\Dotenv::createImmutable(__DIR__);
-$dotenv->load();
-
 class Mysql
 {
     private $dbHost = '';
@@ -105,14 +101,5 @@ class Mysql
         $result = $query->execute();
 
         return $result;
-    }
-
-    public function test()
-    {
-        $sql = "SELECT * FROM `$this->dbName`.`wp_users` WHERE `ID` <> :id";
-        $prepareParam = [];
-        $prepareParam['id'] = 0;
-        
-        return $this->querySelect($sql, $prepareParam);
     }
 }
