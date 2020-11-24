@@ -66,6 +66,7 @@ class Mysql
     private function sqlConnect()
     {
         $this->connection = new PDO('mysql: host = ' . $this->dbHost . '; dbname = ' . $this->dbName . '; charset=utf8', $this->dbUser, $this->dbPassword);
+        $this->connection->exec('use ' . $this->dbName);
     }
     
     public function querySelect($sql, $prepareParam)
