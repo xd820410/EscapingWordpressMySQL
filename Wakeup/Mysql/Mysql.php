@@ -73,7 +73,9 @@ class Mysql
     {
         $query = $this->connection->prepare($sql);
         foreach ($prepareParam as $paramKey => $paramValue) {
-            if (gettype($paramValue) === 'string' && ($paramValue == 'true' || $paramValue == 'false')) {
+            if (gettype($paramValue) === 'boolean') {
+                $query->bindValue($paramKey, $paramValue, PDO::PARAM_BOOL);
+            } else if (gettype($paramValue) === 'string' && ($paramValue == 'true' || $paramValue == 'false')) {
                 $paramValue = $paramValue === 'true'? true: false;
                 $query->bindValue($paramKey, $paramValue, PDO::PARAM_BOOL);
             } else if (gettype($paramValue) === 'integer') {
@@ -92,9 +94,13 @@ class Mysql
     {
         $query = $this->connection->prepare($sql);
         foreach ($prepareParam as $paramKey => $paramValue) {
-            if (gettype($paramValue) === 'string' && ($paramValue == 'true' || $paramValue == 'false')) {
+            if (gettype($paramValue) === 'boolean') {
+                $query->bindValue($paramKey, $paramValue, PDO::PARAM_BOOL);
+            } else if (gettype($paramValue) === 'string' && ($paramValue == 'true' || $paramValue == 'false')) {
                 $paramValue = $paramValue === 'true'? true: false;
                 $query->bindValue($paramKey, $paramValue, PDO::PARAM_BOOL);
+            } else if (gettype($paramValue) === 'integer') {
+                $query->bindValue($paramKey, $paramValue, PDO::PARAM_INT);
             } else {
                 $query->bindValue($paramKey, $paramValue);
             }
