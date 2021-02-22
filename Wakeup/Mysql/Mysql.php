@@ -66,6 +66,8 @@ class Mysql
     private function sqlConnect()
     {
         $this->connection = new PDO('mysql: host = ' . $this->dbHost . '; dbname = ' . $this->dbName . '; charset=utf8', $this->dbUser, $this->dbPassword);
+        $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->connection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
         $this->connection->exec('use ' . $this->dbName);
     }
     
@@ -73,7 +75,11 @@ class Mysql
     {
         $query = $this->connection->prepare($sql);
         foreach ($prepareParam as $paramKey => $paramValue) {
-            if (gettype($paramValue) === 'boolean') {
+            if ($paramValue === null) {
+                $query->bindValue($paramKey, $paramValue, PDO::PARAM_NULL);
+            } else if (gettype($paramValue) === 'double') {
+                $query->bindValue($paramKey, strval($paramValue), PDO::PARAM_STR);
+            } else if (gettype($paramValue) === 'boolean') {
                 $query->bindValue($paramKey, $paramValue, PDO::PARAM_BOOL);
             } else if (gettype($paramValue) === 'string' && ($paramValue == 'true' || $paramValue == 'false')) {
                 $paramValue = $paramValue === 'true'? true: false;
@@ -81,7 +87,7 @@ class Mysql
             } else if (gettype($paramValue) === 'integer') {
                 $query->bindValue($paramKey, $paramValue, PDO::PARAM_INT);
             } else {
-                $query->bindValue($paramKey, $paramValue);
+                $query->bindValue($paramKey, strval($paramValue), PDO::PARAM_STR);
             }
         }
         $query->execute();
@@ -94,7 +100,11 @@ class Mysql
     {
         $query = $this->connection->prepare($sql);
         foreach ($prepareParam as $paramKey => $paramValue) {
-            if (gettype($paramValue) === 'boolean') {
+            if ($paramValue === null) {
+                $query->bindValue($paramKey, $paramValue, PDO::PARAM_NULL);
+            } else if (gettype($paramValue) === 'double') {
+                $query->bindValue($paramKey, strval($paramValue), PDO::PARAM_STR);
+            } else if (gettype($paramValue) === 'boolean') {
                 $query->bindValue($paramKey, $paramValue, PDO::PARAM_BOOL);
             } else if (gettype($paramValue) === 'string' && ($paramValue == 'true' || $paramValue == 'false')) {
                 $paramValue = $paramValue === 'true'? true: false;
@@ -102,12 +112,17 @@ class Mysql
             } else if (gettype($paramValue) === 'integer') {
                 $query->bindValue($paramKey, $paramValue, PDO::PARAM_INT);
             } else {
-                $query->bindValue($paramKey, $paramValue);
+                $query->bindValue($paramKey, strval($paramValue), PDO::PARAM_STR);
             }
         }
         $result = $query->execute();
 
         return $result;
+    }
+
+    public function getInfo()
+    {
+        return $this->dbHost . ' dbname = ' . $this->dbName;
     }
 
     public function insert($sql, $prepareParam)
@@ -125,8 +140,9 @@ class Mysql
                 $query->bindValue($paramKey, $paramValue);
             }
         }
-        $result = $query->execute();
+        $query->execute();
+        $insertId = $this->connection->lastInsertId();
 
-        return $this->connection->lastInsertId();
+        return $insertId;
     }
 }
