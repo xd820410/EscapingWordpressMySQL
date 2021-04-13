@@ -2,7 +2,7 @@
 
 namespace Wakeup\Mysql;
 
-use \PDO;
+use PDO;
 
 class Mysql
 {
@@ -14,11 +14,11 @@ class Mysql
 
     public function __construct()
     {
-        $this->getWordpressDatabaseInfomation();
+        $this->getWordpressDatabaseInformation();
         $this->sqlConnect();
     }
 
-    private function getWordpressDatabaseInfomation()
+    private function getWordpressDatabaseInformation()
     {
         if (empty($_SERVER['DOCUMENT_ROOT'])) {
             $file = fopen($_ENV['DOCUMENT_ROOT'] . $_ENV['WORDPRESS_CONFIG_PATH'], 'r');
